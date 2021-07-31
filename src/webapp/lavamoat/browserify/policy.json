@@ -1,0 +1,32 @@
+{
+  "resources": {
+    "cross-fetch": {
+      "globals": {
+        "Blob": true,
+        "FileReader": true,
+        "FormData": true,
+        "URLSearchParams.prototype.isPrototypeOf": true,
+        "XMLHttpRequest": true
+      }
+    },
+    "eth-query": {
+      "packages": {
+        "json-rpc-random-id": true,
+        "xtend": true
+      }
+    },
+    "h": {
+      "globals": {
+        "HTMLElement": true,
+        "document.createElement": true,
+        "document.createTextNode": true
+      }
+    },
+    "process": {
+      "globals": {
+        "clearTimeout": true,
+        "setTimeout": true
+      }
+    }
+  }
+}

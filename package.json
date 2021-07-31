@@ -1,0 +1,69 @@
+{
+  "name": "eth-faucet",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@lavamoat/allow-scripts": "^1.0.5",
+    "@pablopunk/geo-ip": "^1.0.0",
+    "bn": "^1.0.5",
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "cross-fetch": "^3.1.4",
+    "emoji-flag": "^1.1.0",
+    "eth-query": "^2.1.2",
+    "ethereumjs-tx": "^2.1.2",
+    "ethereumjs-util": "^7.0.0",
+    "ethers": "^5.4.3",
+    "ethjs-query": "^0.3.8",
+    "events": "^3.3.0",
+    "express": "^4.14.0",
+    "lavamoat": "^5.3.1",
+    "patch-package": "^6.2.2",
+    "request": "^2.75.0",
+    "web3-provider-engine": "^15.0.12",
+    "xtend": "^4.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "concurrently": "^5.2.0",
+    "envify": "^4.0.0",
+    "ganache-cli": "^6.9.1",
+    "h": "^0.1.0",
+    "lavamoat-browserify": "^13.1.1",
+    "standard": "^14.3.3",
+    "tape": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=14.15.4"
+  },
+  "scripts": {
+    "setup": "yarn install && patch-package && allow-scripts",
+    "test": "concurrently --kill-others --success=first 'npm:test:ganache' 'npm:test:server' 'npm:test:runner'",
+    "test:ganache": "ganache-cli --defaultBalanceEther '1000000000' -m 'stool sorry reveal vacuum notice grass trap aspect trigger marble mountain cargo'",
+    "test:server": "sleep 3 && FAUCET_CONFIG='test' FAUCET_CONFIG_PATH='../../test/config.js' npm start",
+    "test:runner": "sleep 7 && node test/index.js",
+    "test:stress": "SKIP_RATE_LIMITER=true concurrently --kill-others --success=first 'npm:test:ganache' 'npm:test:server' 'npm:test:stress:runner'",
+    "test:stress:runner": "sleep 7 && node test/stress.js",
+    "start": "(cd src/server && lavamoat index.js)",
+    "build": "(cd src/bundler && lavamoat index.js)",
+    "deploy": "docker-compose pull && docker-compose build && docker-compose stop && docker-compose up -d && docker-compose logs -f --tail 200",
+    "lavamoat": "yarn run lavamoat:server && yarn run lavamoat:bundler && yarn run lavamoat:webapp",
+    "lavamoat:webapp": "(cd src/webapp && browserify index.js --plugin [ lavamoat-browserify --writeAutoPolicy ] > /dev/null)",
+    "lavamoat:bundler": "(cd src/bundler && lavamoat index.js --writeAutoPolicy)",
+    "lavamoat:server": "(cd src/server && lavamoat index.js --writeAutoPolicy)"
+  },
+  "author": "kumavis",
+  "license": "ISC",
+  "lavamoat": {
+    "allowScripts": {
+      "scrypt": false,
+      "keccak": true,
+      "bn": true,
+      "secp256k1": true,
+      "@lavamoat/preinstall-always-fail": false,
+      "core-js": false
+    }
+  }
+}

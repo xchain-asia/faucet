@@ -1,0 +1,6 @@
+module.exports = {
+  xchain: {
+    rpcOrigin: 'https://rpc.xchain.asia',
+    privateKey: '0x',
+  },
+}
