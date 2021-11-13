@@ -142,37 +142,41 @@ function renderApp () {
 
   // render faucet ui
   render([
-
-    h('nav.navbar.navbar-default', [
-      h('h1.container-fluid', 'xChain XTH Faucet')
-    ]),
-
-    h('section.container', [
-
-      h('div.panel.panel-default', [
-        h('div.panel-heading', [
-          h('h3', 'faucet')
-        ]),
-        h('div.panel-body', [
-          h('div', 'address: ' + state.faucetAddress),
-          h('div', 'balance: ' + formatBalance(state.faucetBalance)),
-          h('button.btn.btn-success', 'request 0.01 XTH from faucet', {
+    h('section', [
+      h('div.home', [
+        h('div.home-center.text-center', [
+          h('img', {
             style: {
-              margin: '4px'
+              width: '70px'
             },
-            // disabled: state.userAddress ? null : true,
-            click: getEther
-          })
+            src: './assets/logo.png'
+          }),
+          h('h1.text-center', 'Faucet'),
+          h('div.text-center', [
+            h('div', 'Address: ' + state.faucetAddress),
+            h('h4', 'Available balance: ' + formatBalance(state.faucetBalance)),
+            h('button.btn.btn-success', 'Request 0.01 XTH', {
+              style: {
+                'margin-top': '10px'
+              },
+              // disabled: state.userAddress ? null : true,
+              click: getEther
+            })
+          ]),
+          state.errorMessage ? h('div', { style: { 
+            color: 'red',
+            'margin-top': '10px'
+          } }, state.errorMessage) : null
         ])
       ]),
 
       h('div.panel.panel-default', [
         h('div.panel-heading', [
-          h('h3', 'user')
+          h('h3.text-center', 'User Wallet')
         ]),
-        h('div.panel-body', [
-          h('div', 'address: ' + state.userAddress),
-          h('div', 'balance: ' + formatBalance(state.fromBalance)),
+        h('div.panel-body.text-center', [
+          h('div', 'Address: ' + state.userAddress),
+          h('div', 'Balance: ' + formatBalance(state.fromBalance)),
           h('div', 'donate to faucet:'),
           h('button.btn.btn-warning', '1 XTH', {
             style: {
@@ -198,26 +202,23 @@ function renderApp () {
         ])
       ]),
 
-      h('div.panel.panel-default', [
-        h('div.panel-heading', [
-          h('h3', 'transactions')
-        ]),
-        h('div.panel-body', {
-          style: {
-            'flex-direction': 'column',
-            display: 'flex'
-          }
-        }, (
-          state.transactions.map((txHash) => {
-            return link(`https://exp.xchain.asia/tx/${txHash}`, txHash)
-          })
-        ))
-      ])
-
-    ]),
-
-    state.errorMessage ? h('div', { style: { color: 'red' } }, state.errorMessage) : null
-
+    //   h('div.panel.panel-default', [
+    //     h('div.panel-heading', [
+    //       h('h3', 'transactions')
+    //     ]),
+    //     h('div.panel-body', {
+    //       style: {
+    //         'flex-direction': 'column',
+    //         display: 'flex'
+    //       }
+    //     }, (
+    //       state.transactions.map((txHash) => {
+    //         return link(`https://exp.xchain.asia/tx/${txHash}`, txHash)
+    //       })
+    //     ))
+    //   ])
+    ])
+    // state.errorMessage ? h('div', { style: { color: 'red' } }, state.errorMessage) : null
   ])
 }
 
