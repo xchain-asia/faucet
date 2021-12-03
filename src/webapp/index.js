@@ -1,6 +1,6 @@
 const h = require('h')
 const fetch = require('cross-fetch');
-const EthQuery = require('eth-query')
+const EthQuery = require('eth-query');
 
 var state = {
   isLoading: true,
@@ -29,7 +29,8 @@ function startApp () {
   }
 
   // display warning if incompatible
-  if (!provider) {
+  const params = new URLSearchParams(window.location.search)
+  if (!provider && !params.has('wallet')) {
     // abort
     render(h('span', 'No ethereum provider detected. Install a web-enabled wallet (eg MetaMask metamask.io) to continue'))
     return
@@ -140,6 +141,8 @@ function renderApp () {
     ])
   }
 
+  const params = new URLSearchParams(window.location.search)
+
   // render faucet ui
   render([
     h('section', [
@@ -155,6 +158,7 @@ function renderApp () {
           h('div.text-center', [
             h('div', 'Address: ' + state.faucetAddress),
             h('h4', 'Available balance: ' + formatBalance(state.faucetBalance)),
+            params.get('wallet_address') ? h('div', 'Your Address: ' + params.get('wallet_address')) : '',
             h('button.btn.btn-success', 'Request 0.01 XTH', {
               style: {
                 'margin-top': '10px'
@@ -227,8 +231,22 @@ function link (url, content) {
 }
 
 async function getEther () {
-  const account = await requestAccounts()
 
+  const params = new URLSearchParams(window.location.search)
+
+  let account = ''
+
+  if (params.has('wallet')) {
+    if (params.has('wallet_address')) {
+      account = params.get('wallet_address')
+    } else {
+      // var uri = `${window.location.protocol}//${window.location.hostname}${(window.location.port ? ':' + window.location.port: '')}`
+      window.open(params.get('wallet') + '/address' + '?dest=' + window.location.href , '_self')
+    }
+  } else {
+    account = await requestAccounts()
+  }
+  
   // We already prompted to unlock in requestAccounts()
   if (!account) return
 
